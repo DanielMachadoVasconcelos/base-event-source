@@ -1,0 +1,28 @@
+version: '3'
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    hostname: dynamodb-local
+    container_name: dynamodb-local
+    network_mode: bridge
+    ports:
+      - "8042:8000"
+    command: >
+      aws dynamodb --endpoint-url http://localhost:8042 create-table --table-name account \
+      --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH \
+      --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+
+  application:
+    build: .
+    network_mode: bridge
+    container_name: web-application
+    expose:
+      - 8080
+      - 8888
+    ports:
+      - 8888:8888
+      - 8080:8080
+    depends_on:
+      - dynamodb
+    links:
+      - dynamodb
