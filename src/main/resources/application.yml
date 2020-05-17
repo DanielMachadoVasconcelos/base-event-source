@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   jackson:
     property-naming-strategy: SNAKE_CASE
 # Server configuration
@@ -10,7 +12,8 @@ logging:
     console: "[%d] [%-5level] %logger : %msg%n"
 amazon:
   dynamodb:
-    endpoint: "http://localhost:8000/"
+    endpoint: "http://dynamodb-local:8000/"
   aws:
     accesskey: "access-key"
     secretkey: "secret-key"
+    tableName: "account"
