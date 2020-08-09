@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.SystemPropertyCredentialsProvider;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 
 import java.net.URI;
@@ -22,15 +23,14 @@ public class DynamoDBConfiguration {
     @Value("${amazon.dynamodb.endpoint}")
     private String dynamoDbEndpoint;
 
-
     @Bean
     public DynamoDbAsyncClient dynamoDbAsyncClient() {
+        System.setProperty("aws.accessKeyId", awsAccessKey);
+        System.setProperty("aws.secretAccessKey", awsSecretKey);
         return DynamoDbAsyncClient.builder()
                 .region(US_EAST_2)
                 .endpointOverride(URI.create(dynamoDbEndpoint))
-                .credentialsProvider(DefaultCredentialsProvider
-                        .builder()
-                        .build())
+                .credentialsProvider(SystemPropertyCredentialsProvider.create())
                 .build();
     }
 }

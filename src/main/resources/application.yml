@@ -17,3 +17,26 @@ amazon:
     accesskey: "access-key"
     secretkey: "secret-key"
     tableName: "account"
+
+---
+
+spring:
+  profiles: test
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+# Server configuration
+server:
+  port: 8888 #set your port
+# Logger configuration
+logging:
+  pattern:
+    console: "[%d] [%-5level] %logger : %msg%n"
+amazon:
+  dynamodb:
+    endpoint: "http://dynamodb-local:8000/"
+  aws:
+    accesskey: "access-key"
+    secretkey: "secret-key"
+    tableName: "account"
